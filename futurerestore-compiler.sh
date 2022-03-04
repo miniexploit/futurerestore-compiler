@@ -12,6 +12,13 @@ echo "[1] https://github.com/m1stadev/futurerestore"
 echo "[2] https://github.com/Mini-Exploit/futurerestore"
 read choice
 
+if [ $choice = "1" ] || [ $choice = "2" ]; then
+	true
+else
+	echo Invalid input
+	exit
+fi
+
 # Clone dependencies
 DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
 DIRECTORIES=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher")
@@ -61,9 +68,6 @@ if [ $choice = "1" ]; then
 	git clone -b test --recursive https://github.com/m1stadev/futurerestore
 elif [ $choice = "2" ]; then
 	git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
-else
-	echo Invalid input
-	exit
 fi
 
 echo
