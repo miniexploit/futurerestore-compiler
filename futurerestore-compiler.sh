@@ -51,7 +51,7 @@ for DIR in $DIRECTORIES; do
 	echo
 	echo Building $DIR
 	if [ $DIR = "libipatcher" ]; then
-		cp xpwn/includes/* libipatcher/include/
+		cp -r xpwn/includes/* libipatcher/include/
 	fi
 	cd $DIR
 	./autogen.sh
