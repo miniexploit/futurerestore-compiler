@@ -75,9 +75,8 @@ echo Building futurerestore
 cd futurerestore
 ./autogen.sh
 make
+make install
 echo
 echo Finished building futurerestore
-rm /usr/local/bin/futurerestore
-cp futurerestore/futurerestore /usr/local/bin
 echo You can now call futurerestore by running \"futurerestore\"
 
