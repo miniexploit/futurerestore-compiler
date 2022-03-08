@@ -56,7 +56,6 @@ for DIR in $DIRECTORIES; do
 	cd $DIR
 	./autogen.sh
 	make
-	make install
 	cd ../
 	echo
 	echo Finished installing $DIR
