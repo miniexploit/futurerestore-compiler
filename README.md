@@ -12,3 +12,4 @@ This script is only compatible with macOS, Linux will be supported soon
 ```
 ./futurerestore-compiler.sh
 ```
+**NOTE**: You might be asked for password for root permission during the installation, just enter your computer password to continue
