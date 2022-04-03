@@ -21,9 +21,9 @@ else
 fi
 
 # Clone dependencies
-DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
-DIRECTORIES=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "libimobiledevice" "libimobiledevice-glue")
-RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice" "libimobiledevice-glue")
+DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
+DIRECTORIES=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "libimobiledevice-glue")
+RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice-glue")
 
 for DIR in $RM; do
 	rm -rf $DIR
@@ -37,7 +37,7 @@ done
 # brew
 
 
-BREW_PACKAGE=("libpng" "libzip")
+BREW_PACKAGE=("libpng" "libzip" "openssl" "libimobiledevice")
 for PACKAGE in $BREW_PACKAGE; do
 	echo
 	echo Installing $PACKAGE
@@ -74,10 +74,10 @@ fi
 echo
 echo Building futurerestore
 cd futurerestore
-sudo ./autogen.sh
+sudo ./autogen.sh --prefix=/usr/local
 sudo make
 sudo make install
 echo
-echo Finished building futurerestore
+echo Finished compiling futurerestore
 echo You can now call futurerestore by running \"futurerestore\"
 
