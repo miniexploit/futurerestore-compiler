@@ -9,7 +9,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo Select 1 of these repositories below to install
-echo "[1] https://github.com/m1stadev/futurerestore"
+echo "[1] https://github.com/futurerestore/futurerestore"
 echo "[2] https://github.com/Mini-Exploit/futurerestore"
 read choice
 
