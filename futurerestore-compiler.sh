@@ -20,22 +20,6 @@ else
 	exit
 fi
 
-# Clone dependencies
-DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
-DIRECTORIES=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "libimobiledevice-glue")
-RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice-glue")
-
-for DIR in $RM; do
-	rm -rf $DIR
-done
-
-for REPO in $DEPENDENCIES; do
-	git clone --recursive $REPO
-done
-
-# Install dependencies
-# brew
-
 
 BREW_PACKAGE=("libpng" "libzip" "openssl" "libimobiledevice")
 for PACKAGE in $BREW_PACKAGE; do
@@ -46,6 +30,20 @@ for PACKAGE in $BREW_PACKAGE; do
 	echo Finished installing $PACKAGE
 done
 
+# Clone dependencies
+DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
+DIRECTORIES=("libimobiledevice-glue"  "libusbmuxd" "libplist" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher")
+RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice-glue")
+
+for DIR in $RM; do
+	rm -rf $DIR
+done
+
+for REPO in $DEPENDENCIES; do
+	git clone --recursive $REPO
+done
+
+
 # autogen
 
 for DIR in $DIRECTORIES; do
@@ -55,7 +53,7 @@ for DIR in $DIRECTORIES; do
 		cp -r xpwn/includes/* libipatcher/include/
 	fi
 	cd $DIR
-	./autogen.sh
+	./autogen.sh --without-cython
 	make
 	sudo make install
 	cd ../
@@ -79,5 +77,10 @@ sudo make
 sudo make install
 echo
 echo Finished compiling futurerestore
+echo Cleaning up
+# Clean up
+for DIR in $RM; do
+	rm -rf $DIR
+done
 echo You can now call futurerestore by running \"futurerestore\"
 
