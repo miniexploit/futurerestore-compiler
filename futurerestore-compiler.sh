@@ -64,16 +64,16 @@ done
 # Clone futurerestore
 rm -rf futurerestore &> /dev/null
 if [ $choice = "1" ]; then
-	sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
+	git clone -b test --recursive https://github.com/futurerestore/futurerestore
 elif [ $choice = "2" ]; then
-	sudo git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
+	git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
 fi
 
 echo
 echo Building futurerestore
 cd futurerestore
-sudo ./autogen.sh --prefix=/usr/local
-sudo make
+./autogen.sh --prefix=/usr/local
+make
 sudo make install
 echo
 echo Finished compiling futurerestore
