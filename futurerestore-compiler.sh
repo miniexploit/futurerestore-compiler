@@ -21,7 +21,7 @@ else
 fi
 
 
-BREW_PACKAGE=("libpng" "libzip" "openssl" "libimobiledevice")
+BREW_PACKAGE=("libpng" "libzip" "openssl" "libimobiledevice" "bzip2")
 for PACKAGE in $BREW_PACKAGE; do
 	echo
 	echo Installing $PACKAGE
@@ -50,7 +50,8 @@ for DIR in $DIRECTORIES; do
 	echo
 	echo Building $DIR
 	if [ $DIR = "libipatcher" ]; then
-		cp -r xpwn/includes/* libipatcher/include/
+		mkdir -p /usr/local/include/xpwn &> /dev/null
+		unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
 	fi
 	cd $DIR
 	./autogen.sh --without-cython
@@ -64,9 +65,9 @@ done
 # Clone futurerestore
 rm -rf futurerestore &> /dev/null
 if [ $choice = "1" ]; then
-	git clone -b test --recursive https://github.com/futurerestore/futurerestore
+	sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
 elif [ $choice = "2" ]; then
-	git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
+	sudo git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
 fi
 
 echo
