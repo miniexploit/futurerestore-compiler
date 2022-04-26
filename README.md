@@ -10,6 +10,6 @@ This script is only compatible with macOS, Linux will be supported soon
 
 ## Usage
 ```
-./futurerestore-compiler.sh
+./futurerestore-compiler.sh [--without-dependencies]
 ```
 **NOTE**: You might be asked for password for root permission during the installation, just enter your computer password to continue
