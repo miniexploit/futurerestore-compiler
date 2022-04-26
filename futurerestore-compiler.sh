@@ -20,47 +20,56 @@ else
 	exit
 fi
 
-
-BREW_PACKAGE=("libpng" "libzip" "openssl" "libimobiledevice" "bzip2")
-for PACKAGE in $BREW_PACKAGE; do
-	echo
-	echo Installing $PACKAGE
-	brew install $PACKAGE
-	echo
-	echo Finished installing $PACKAGE
-done
-
-# Clone dependencies
-DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
-DIRECTORIES=("libimobiledevice-glue"  "libusbmuxd" "libplist" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher")
-RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice-glue")
-
-for DIR in $RM; do
-	rm -rf $DIR
-done
-
-for REPO in $DEPENDENCIES; do
-	git clone --recursive $REPO
-done
+if [[ $@ == *"--without-dependencies"* ]]; then
+	echo WARNING: WILL NOT CLONE AND COMPILE DEPENDENCIES BEFORE COMPILING FUTURERESTORE
+	echo YOU SHOULD ONLY SPECIFY THIS ARGUMENT IF YOUR COMPUTER HAS HAD ENOUGH DEPENDENCIES FOR COMPILING FUTURERESTORE
+	echo OR ELSE THE PROCESS WILL FAIL
+fi
 
 
-# autogen
+if [[ $@ != *"--without-dependencies"* ]]; then
 
-for DIR in $DIRECTORIES; do
-	echo
-	echo Building $DIR
-	if [ $DIR = "libipatcher" ]; then
-		mkdir -p /usr/local/include/xpwn &> /dev/null
-		unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
-	fi
-	cd $DIR
-	./autogen.sh --without-cython
-	make
-	sudo make install
-	cd ../
-	echo
-	echo Finished installing $DIR
-done
+	BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice")
+	for PACKAGE in $BREW_PACKAGE; do
+		echo
+		echo Installing $PACKAGE
+		brew install $PACKAGE
+		echo
+		echo Finished installing $PACKAGE
+	done
+
+	# Clone dependencies
+	DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
+	DIRECTORIES=("libimobiledevice-glue"  "libusbmuxd" "libplist" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher")
+	RM=("libplist" "libusbmuxd" "libirecovery" "libgeneral" "libfragmentzip" "libinsn" "img4tool" "liboffsetfinder64" "libipatcher" "xpwn" "futurerestore" "libimobiledevice-glue")
+
+	for DIR in $RM; do
+		rm -rf $DIR
+	done
+
+	for REPO in $DEPENDENCIES; do
+		git clone --recursive $REPO
+	done
+
+
+	# autogen
+
+	for DIR in $DIRECTORIES; do
+		echo
+		echo Building $DIR
+		if [ $DIR = "libipatcher" ]; then
+			mkdir -p /usr/local/include/xpwn &> /dev/null
+			unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
+		fi
+		cd $DIR
+		./autogen.sh --without-cython
+		make
+		sudo make install
+		cd ../
+		echo
+		echo Finished installing $DIR
+	done
+fi
 
 # Clone futurerestore
 rm -rf futurerestore &> /dev/null
