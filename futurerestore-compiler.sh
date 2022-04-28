@@ -56,12 +56,12 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 
 	for DIR in $DIRECTORIES; do
 		echo
-		echo Building $DIR
+		echo Compiling $DIR
 		if [ $DIR = "libipatcher" ]; then
 			sudo rm -r /usr/local/include/xpwn
 			mkdir -p /usr/local/include/xpwn &> /dev/null
 			unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
-			unzip -d xpwnlibs.zip /usr/local/lib
+			unzip -d /usr/local/lib xpwnlibs.zip
 		fi
 		cd $DIR
 		./autogen.sh --without-cython
@@ -69,7 +69,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 		sudo make install
 		cd ../
 		echo
-		echo Finished installing $DIR
+		echo Finished compiling $DIR
 	done
 fi
 
@@ -82,7 +82,7 @@ elif [ $choice = "2" ]; then
 fi
 
 echo
-echo Building futurerestore
+echo Compiling futurerestore
 cd futurerestore
 ./autogen.sh --prefix=/usr/local
 make
