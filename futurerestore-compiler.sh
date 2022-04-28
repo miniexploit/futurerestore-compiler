@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-
+cd "$(dirname "$0")"
 # check homebrew
 which brew
 if [ $? -ne 0 ]; then
@@ -58,8 +58,10 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 		echo
 		echo Building $DIR
 		if [ $DIR = "libipatcher" ]; then
+			sudo rm -r /usr/local/include/xpwn /usr/local/lib/xpwn
 			mkdir -p /usr/local/include/xpwn &> /dev/null
 			unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
+			unzip -d xpwnlibs.zip /usr/local/lib
 		fi
 		cd $DIR
 		./autogen.sh --without-cython
