@@ -84,8 +84,8 @@ fi
 echo
 echo Compiling futurerestore
 cd futurerestore
-./autogen.sh --prefix=/usr/local
-make
+sudo ./autogen.sh --prefix=/usr/local
+sudo make
 sudo make install
 echo
 echo Finished compiling futurerestore
