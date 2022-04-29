@@ -34,6 +34,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 		echo
 		echo Installing $PACKAGE
 		brew install $PACKAGE
+		brew link $PACKAGE
 		echo
 		echo Finished installing $PACKAGE
 	done
