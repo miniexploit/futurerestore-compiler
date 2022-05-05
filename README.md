@@ -2,7 +2,7 @@
 Shell script for installing futurerestore
 
 This script has the ability to compile futurerestore from one of the 2 repositories below:
-* [https://github.com/m1stadev/futurerestore](https://github.com/m1stadev/futurerestore)
+* [https://github.com/futureresore/futurerestore](https://github.com/futureresore/futurerestore)
 * [https://github.com/Mini-Exploit/futurerestore](https://github.com/Mini-Exploit/futurerestore)
 
 ## Supported platform
