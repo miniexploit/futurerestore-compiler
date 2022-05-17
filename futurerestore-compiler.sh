@@ -40,7 +40,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 	done
 	
 	# Gain sudo permission
-	sudo -i
+	sudo -v
 
 	# Clone dependencies
 	DEPENDENCIES=("https://github.com/libimobiledevice/libplist" "https://github.com/libimobiledevice/libusbmuxd" "https://github.com/libimobiledevice/libirecovery" "https://github.com/libimobiledevice/libimobiledevice-glue" "https://github.com/nyuszika7h/xpwn" "https://github.com/tihmstar/libgeneral" "https://github.com/tihmstar/libfragmentzip" "https://github.com/tihmstar/libinsn" "https://github.com/tihmstar/img4tool" "https://github.com/Cryptiiiic/liboffsetfinder64" "https://github.com/Cryptiiiic/libipatcher")
@@ -78,8 +78,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 fi
 
 # Clone futurerestore
-sudo -i
-rm -rf futurerestore &> /dev/null
+sudo rm -rf futurerestore &> /dev/null
 if [ $choice = "1" ]; then
 	sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
 elif [ $choice = "2" ]; then
@@ -89,9 +88,9 @@ fi
 echo
 echo Compiling futurerestore
 cd futurerestore
-./autogen.sh --prefix=/usr/local
-make
-make install
+sudo ./autogen.sh --prefix=/usr/local
+sudo make
+sudo make install
 echo
 echo Finished compiling futurerestore
 echo Cleaning up
