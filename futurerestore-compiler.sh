@@ -8,18 +8,6 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-echo Select 1 of these repositories below to install
-echo "[1] https://github.com/futurerestore/futurerestore"
-echo "[2] https://github.com/Mini-Exploit/futurerestore"
-read choice
-
-if [ $choice = "1" ] || [ $choice = "2" ]; then
-	true
-else
-	echo Invalid input
-	exit
-fi
-
 if [[ $@ == *"--without-dependencies"* ]]; then
 	echo WARNING: WILL NOT CLONE AND COMPILE DEPENDENCIES BEFORE COMPILING FUTURERESTORE
 	echo YOU SHOULD ONLY SPECIFY THIS ARGUMENT IF YOUR COMPUTER HAS HAD ENOUGH DEPENDENCIES FOR COMPILING FUTURERESTORE
@@ -29,16 +17,17 @@ fi
 
 if [[ $@ != *"--without-dependencies"* ]]; then
 
-	BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool")
-	for PACKAGE in $BREW_PACKAGE; do
-		echo
-		echo Installing $PACKAGE
-		brew install $PACKAGE
-		brew link $PACKAGE
-		echo
-		echo Finished installing $PACKAGE
-	done
-	
+	if [[ $@ == *"--skip-brew"* ]]; then
+		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool")
+		for PACKAGE in $BREW_PACKAGE; do
+			echo
+			echo Installing $PACKAGE
+			brew install $PACKAGE
+			brew link $PACKAGE
+			echo
+			echo Finished installing $PACKAGE
+		done
+	fi
 	# Gain sudo permission
 	sudo -v
 
@@ -79,18 +68,12 @@ fi
 
 # Clone futurerestore
 sudo rm -rf futurerestore &> /dev/null
-if [ $choice = "1" ]; then
-	sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
-elif [ $choice = "2" ]; then
-	sudo git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
-fi
+sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
 
 echo
 echo Compiling futurerestore
 cd futurerestore
-sudo ./autogen.sh --prefix=/usr/local
-sudo make
-sudo make install
+./build.sh -DARCH=x86_64
 echo
 echo Finished compiling futurerestore
 echo Cleaning up
@@ -98,5 +81,3 @@ echo Cleaning up
 for DIR in $RM; do
 	rm -rf $DIR
 done
-echo You can now call futurerestore by running \"futurerestore\"
-
