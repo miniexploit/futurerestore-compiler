@@ -29,6 +29,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 		done
 	fi
 	export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+	export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
 	# Gain sudo permission
 	sudo -v
 
@@ -78,7 +79,7 @@ fi
 
 # Clone futurerestore
 sudo rm -rf futurerestore &> /dev/null
-sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
+sudo git clone --recursive https://github.com/futurerestore/futurerestore
 
 echo
 echo Compiling futurerestore
