@@ -17,7 +17,7 @@ fi
 
 if [[ $@ != *"--without-dependencies"* ]]; then
 
-	if [[ $@ == *"--skip-brew"* ]]; then
+	if [[ $@ != *"--skip-brew"* ]]; then
 		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool")
 		for PACKAGE in $BREW_PACKAGE; do
 			echo
