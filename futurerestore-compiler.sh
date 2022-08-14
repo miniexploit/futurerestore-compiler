@@ -18,7 +18,7 @@ fi
 if [[ $@ != *"--without-dependencies"* ]]; then
 
 	if [[ $@ != *"--skip-brew"* ]]; then
-		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool" "cmake")
+		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool" "cmake" "coreutils")
 		for PACKAGE in $BREW_PACKAGE; do
 			echo
 			echo Installing $PACKAGE
@@ -28,6 +28,7 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 			echo Finished installing $PACKAGE
 		done
 	fi
+	export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 	# Gain sudo permission
 	sudo -v
 
