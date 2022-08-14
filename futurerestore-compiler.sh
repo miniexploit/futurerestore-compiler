@@ -56,6 +56,15 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 			unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
 			unzip -d /usr/local/lib xpwnlibs.zip
 		fi
+		if [ $DIR = "liboffsetfinder64" ]; then
+			cd $DIR
+			./build.sh
+			make -C cmake-build-debug install
+			cd ../
+			echo
+			echo Finished compiling $DIR
+			continue
+		fi
 		cd $DIR
 		./autogen.sh --without-cython
 		make
