@@ -8,16 +8,16 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-if [[ $@ == *"--without-dependencies"* ]]; then
+if [[ $1 == *"--without-dependencies"* ]]; then
 	echo WARNING: WILL NOT CLONE AND COMPILE DEPENDENCIES BEFORE COMPILING FUTURERESTORE
 	echo YOU SHOULD ONLY SPECIFY THIS ARGUMENT IF YOUR COMPUTER HAS HAD ENOUGH DEPENDENCIES FOR COMPILING FUTURERESTORE
 	echo OR ELSE THE PROCESS WILL FAIL
 fi
 
 
-if [[ $@ != *"--without-dependencies"* ]]; then
+if [[ $1 != *"--without-dependencies"* ]]; then
 
-	if [[ $@ != *"--skip-brew"* ]]; then
+	if [[ $2 != *"--skip-brew"* ]]; then
 		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool" "cmake" "coreutils")
 		for PACKAGE in $BREW_PACKAGE; do
 			echo
@@ -89,6 +89,8 @@ echo
 echo Finished compiling futurerestore
 echo Cleaning up
 # Clean up
-for DIR in $RM; do
-	rm -rf $DIR
-done
+if [[ $3 != *"--no-cleanup"* ]]; then
+	for DIR in $RM; do
+		rm -rf $DIR
+	done
+fi
