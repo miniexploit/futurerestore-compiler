@@ -8,37 +8,28 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-echo Select 1 of these repositories below to install
-echo "[1] https://github.com/futurerestore/futurerestore"
-echo "[2] https://github.com/Mini-Exploit/futurerestore"
-read choice
-
-if [ $choice = "1" ] || [ $choice = "2" ]; then
-	true
-else
-	echo Invalid input
-	exit
-fi
-
-if [[ $@ == *"--without-dependencies"* ]]; then
+if [[ $1 == *"--without-dependencies"* ]]; then
 	echo WARNING: WILL NOT CLONE AND COMPILE DEPENDENCIES BEFORE COMPILING FUTURERESTORE
 	echo YOU SHOULD ONLY SPECIFY THIS ARGUMENT IF YOUR COMPUTER HAS HAD ENOUGH DEPENDENCIES FOR COMPILING FUTURERESTORE
 	echo OR ELSE THE PROCESS WILL FAIL
 fi
 
 
-if [[ $@ != *"--without-dependencies"* ]]; then
+if [[ $1 != *"--without-dependencies"* ]]; then
 
-	BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice")
-	for PACKAGE in $BREW_PACKAGE; do
-		echo
-		echo Installing $PACKAGE
-		brew install $PACKAGE
-		brew link $PACKAGE
-		echo
-		echo Finished installing $PACKAGE
-	done
-	
+	if [[ $2 != *"--skip-brew"* ]]; then
+		BREW_PACKAGE=("openssl" "libpng" "libzip" "libimobiledevice" "autoconf" "automake" "autogen" "libtool" "cmake" "coreutils")
+		for PACKAGE in $BREW_PACKAGE; do
+			echo
+			echo Installing $PACKAGE
+			brew install $PACKAGE
+			brew link $PACKAGE
+			echo
+			echo Finished installing $PACKAGE
+		done
+	fi
+	export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+	export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
 	# Gain sudo permission
 	sudo -v
 
@@ -67,6 +58,15 @@ if [[ $@ != *"--without-dependencies"* ]]; then
 			unzip -d /usr/local/include/xpwn xpwn/xpwn-modified-headers.zip
 			unzip -d /usr/local/lib xpwnlibs.zip
 		fi
+		if [ $DIR = "liboffsetfinder64" ]; then
+			cd $DIR
+			./build.sh
+			make -C cmake-build-debug install
+			cd ../
+			echo
+			echo Finished compiling $DIR
+			continue
+		fi
 		cd $DIR
 		./autogen.sh --without-cython
 		make
@@ -79,24 +79,18 @@ fi
 
 # Clone futurerestore
 sudo rm -rf futurerestore &> /dev/null
-if [ $choice = "1" ]; then
-	sudo git clone -b test --recursive https://github.com/futurerestore/futurerestore
-elif [ $choice = "2" ]; then
-	sudo git clone -b test --recursive https://github.com/Mini-Exploit/futurerestore
-fi
+sudo git clone --recursive https://github.com/futurerestore/futurerestore
 
 echo
 echo Compiling futurerestore
 cd futurerestore
-sudo ./autogen.sh --prefix=/usr/local
-sudo make
-sudo make install
+./build.sh -DARCH=x86_64
 echo
 echo Finished compiling futurerestore
 echo Cleaning up
 # Clean up
-for DIR in $RM; do
-	rm -rf $DIR
-done
-echo You can now call futurerestore by running \"futurerestore\"
-
+if [[ $3 != *"--no-cleanup"* ]]; then
+	for DIR in $RM; do
+		rm -rf $DIR
+	done
+fi
